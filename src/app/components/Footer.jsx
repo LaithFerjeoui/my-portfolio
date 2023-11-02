@@ -7,7 +7,7 @@ const Footer = () => {
        
           <img src="./images/logo.png" alt="logo" className="md:w-[6%] lg:w-[3%] w-[10%] h-[10%]"/>
        
-          <p className="text-slate-600 mt-3">Whatsup: <span className="text-[#acb6be]">+216-94-418-796</span> </p>
+          <p className="text-slate-600 mt-3">Whatsapp: <span className="text-[#acb6be]">+216-94-418-796</span> </p>
       
         
         
