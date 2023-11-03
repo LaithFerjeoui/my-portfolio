@@ -1,11 +1,14 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import GithubIcon from "../../../public/github-icon.svg";
 import LinkedinIcon from "../../../public/linkedin-icon.svg";
 import FacebookIcon from "../../../public/facebook.png";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from 'framer-motion';
+import emailjs from '@emailjs/browser'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export const footerVariants = {
   hidden: {
     opacity: 0,
@@ -26,39 +29,31 @@ export const footerVariants = {
     },
   },
 };
-const EmailSection = () => {
-  const [emailSubmitted, setEmailSubmitted] = useState(false);
+const notify = () =>{
+  toast.success('Message Sent Successfully!', {
+    position: "bottom-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "dark",
+    });
+}
+export const EmailSection = () => {
+  const form = useRef();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const data = {
-      email: e.target.email.value,
-      subject: e.target.subject.value,
-      message: e.target.message.value,
-    };
-    const JSONdata = JSON.stringify(data);
-    const endpoint = "/api/send";
+const sendEmail = (e) => {
+  e.preventDefault();
 
-    // Form the request for sending data to the server.
-    const options = {
-      // The method is POST because we are sending data.
-      method: "POST",
-      // Tell the server we're sending JSON.
-      headers: {
-        "Content-Type": "application/json",
-      },
-      // Body of the request is the JSON data we created above.
-      body: JSONdata,
-    };
-
-    const response = await fetch(endpoint, options);
-    const resData = await response.json();
-
-    if (response.status === 200) {
-      console.log("Message sent.");
-      setEmailSubmitted(true);
-    }
-  };
+  emailjs.sendForm('service_904hbah', 'template_7i5co3b', form.current, 'urlTsfblt8EDt4onW')
+    .then((result) => {
+        console.log(result.text);
+    }, (error) => {
+        console.log(error.text);
+    });
+};
 
   return (
     <motion.section 
@@ -92,21 +87,17 @@ const EmailSection = () => {
         </div>
       </div>
       <div>
-        {emailSubmitted ? (
-          <p className="text-green-500 text-sm mt-2">
-            Email sent successfully!
-          </p>
-        ) : (
-          <form className="flex flex-col" onSubmit={handleSubmit} action="https://getform.io/f/ceb83f83-641d-4406-b5a2-07158d14411b">
+       
+          <form className="flex flex-col" onSubmit={sendEmail} ref={form} >
             <div className="mb-6">
               <label
-                htmlFor="email"
+                htmlFor="user_email"
                 className="text-white block mb-2 text-sm font-medium"
               >
                 Your email
               </label>
               <input
-                name="email"
+                name="user_email"
                 type="email"
                 id="email"
                 required
@@ -116,13 +107,13 @@ const EmailSection = () => {
             </div>
             <div className="mb-6">
               <label
-                htmlFor="subject"
+                htmlFor="user_subject"
                 className="text-white block text-sm mb-2 font-medium"
               >
                 Subject
               </label>
               <input
-                name="subject"
+                name="user_subject"
                 type="text"
                 id="subject"
                 required
@@ -146,12 +137,15 @@ const EmailSection = () => {
             </div>
             <button
               type="submit"
+              value="Send"
+              onClick={notify}
               className="bg-primary-500 hover:bg-primary-600 text-white font-medium py-2.5 px-5 rounded-lg w-full relative z-10"
             >
               Send Message
             </button>
+            <ToastContainer/>
           </form>
-        )}
+      
       </div>
     </motion.section>
   );
