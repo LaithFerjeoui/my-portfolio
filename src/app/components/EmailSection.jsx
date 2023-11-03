@@ -60,7 +60,7 @@ const sendEmail = (e) => {
     variants={footerVariants}
     initial="hidden"
     whileInView="show"
-      id="contact"
+      id="EmailSection"
       className="grid md:grid-cols-2 my-12 md:my-12 py-24 gap-4 relative z-10 "
     >
     <div className="gradient-02"/>
