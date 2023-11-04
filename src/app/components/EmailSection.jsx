@@ -47,7 +47,7 @@ export const EmailSection = () => {
 const sendEmail = (e) => {
   e.preventDefault();
 
-  emailjs.sendForm('service_904hbah', 'template_7i5co3b', form.current, 'urlTsfblt8EDt4onW')
+  emailjs.sendForm('service_dyuqmcb', 'template_2p8i4ya', form.current, '-9WnxWoAZ9wtMyPQF')
     .then((result) => {
         console.log(result.text);
     }, (error) => {
