@@ -45,16 +45,16 @@ const notify = () =>{
 
 export const EmailSection = () => {
   const form = useRef();
-
 const sendEmail = (e) => {
   e.preventDefault();
+  form.current.user_email.value = ''; // Reset the email field
+  form.current.user_subject.value = ''; // Reset the subject field
+  form.current.message.value = ''; // Reset the message field
   notify();
-  emailjs.sendForm('service_ppaiuyc', 'template_gt69pfx', form.current, 'vsQhuJwdVMI1SNi68')
+  emailjs.sendForm('service_ppiuyc', 'template_gt6pfx', form.current, 'vsQhuJwdVMI1Ni68')
     .then((result) => {
         console.log(result.text);
-        form.current.user_email.value = ''; // Reset the email field
-        form.current.user_subject.value = ''; // Reset the subject field
-        form.current.message.value = ''; // Reset the message field
+
         
     }, (error) => {
         console.log(error.text);
