@@ -9,7 +9,7 @@ const projectsData = [
     id: 1,
     title: "Metaverse Landing Page",
     description: "FrontEnd website in order to master modern UI of nextjs 13, aesthetics of tailwindCSS and framer motion's animaitons",
-    image: "/images/projects/1.jpg",
+    image: "/images/projects/1.png",
     tag: ["All", "FrontEnd"],
     gitUrl: "https://github.com/LaithFerjeoui/Metaverse.git",
     previewUrl: "https://metaverse-landing.vercel.app",
