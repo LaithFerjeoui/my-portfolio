@@ -41,19 +41,26 @@ const notify = () =>{
     theme: "dark",
     });
 }
+
+
 export const EmailSection = () => {
   const form = useRef();
 
 const sendEmail = (e) => {
   e.preventDefault();
-
-  emailjs.sendForm('service_dyuqmcb', 'template_2p8i4ya', form.current, '-9WnxWoAZ9wtMyPQF')
+  notify();
+  emailjs.sendForm('service_ppaiuyc', 'template_gt69pfx', form.current, 'vsQhuJwdVMI1SNi68')
     .then((result) => {
         console.log(result.text);
+        form.current.user_email.value = ''; // Reset the email field
+        form.current.user_subject.value = ''; // Reset the subject field
+        form.current.message.value = ''; // Reset the message field
+        
     }, (error) => {
         console.log(error.text);
     });
 };
+
 
   return (
     <motion.section 
@@ -138,7 +145,7 @@ const sendEmail = (e) => {
             <button
               type="submit"
               value="Send"
-              onClick={notify}
+              
               className="bg-primary-500 hover:bg-primary-600 text-white font-medium py-2.5 px-5 rounded-lg w-full relative z-10"
             >
               Send Message
