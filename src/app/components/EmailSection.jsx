@@ -45,21 +45,35 @@ const notify = () =>{
 
 export const EmailSection = () => {
   const form = useRef();
-const sendEmail = (e) => {
-  e.preventDefault();
-  form.current.user_email.value = ''; // Reset the email field
-  form.current.user_subject.value = ''; // Reset the subject field
-  form.current.message.value = ''; // Reset the message field
-  notify();
-  emailjs.sendForm('service_ppiuyc', 'template_gt6pfx', form.current, 'vsQhuJwdVMI1Ni68')
-    .then((result) => {
-        console.log(result.text);
+  const [loading, setLoading] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
-        
-    }, (error) => {
+  const sendEmail = async (e) => {
+    e.preventDefault();
+    setLoading(true); // Start loading animation
+    notify();
+    emailjs.sendForm('service_ppaiuyc', 'template_gt69pfx', form.current, 'vsQhuJwdVMI1SNi68')
+      .then((result) => {
+
+        console.log(result.text);
+        notify();
+        setEmailSent(true); 
+      })
+      .catch((error) => {
         console.log(error.text);
-    });
-};
+      })
+      .finally(() => {
+        setLoading(false); // Stop loading animation regardless of success or failure
+        form.current.user_email.value = ''; // Reset the email field
+        form.current.user_subject.value = ''; // Reset the subject field
+        form.current.message.value = ''; // Reset the message field
+      });
+  };
+
+  const resetButton = () => {
+    setEmailSent(false);
+  };
+
 
 
   return (
@@ -145,10 +159,11 @@ const sendEmail = (e) => {
             <button
               type="submit"
               value="Send"
-              
+              onClick={resetButton}
+              disabled={loading || emailSent}
               className="bg-primary-500 hover:bg-primary-600 text-white font-medium py-2.5 px-5 rounded-lg w-full relative z-10"
             >
-              Send Message
+              {loading ? 'Loading...' : emailSent ? 'Done' : 'Send Message'}
             </button>
             <ToastContainer/>
           </form>
