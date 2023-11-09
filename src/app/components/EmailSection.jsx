@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import emailjs from '@emailjs/browser'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ReCAPTCHA from "react-google-recaptcha";
 export const footerVariants = {
   hidden: {
     opacity: 0,
@@ -29,6 +30,19 @@ export const footerVariants = {
     },
   },
 };
+const notify2 = () =>{
+toast.warn('Please complete the reCAPTCHA verification', {
+  position: "bottom-right",
+  autoClose: 5000,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+  theme: "dark",
+  });
+}
+
 const notify = () =>{
   toast.success('Message Sent Successfully!', {
     position: "bottom-right",
@@ -47,9 +61,16 @@ export const EmailSection = () => {
   const form = useRef();
   const [loading, setLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
-
+  const recaptchaRef = useRef();
+  const [recaptchaChecked, setRecaptchaChecked] = useState(false); // State to track reCAPTCHA check
+  
   const sendEmail = async (e) => {
     e.preventDefault();
+    if (!recaptchaChecked) {
+      // Prevent form submission if reCAPTCHA is not checked
+      notify2();
+      return;
+    }
     setLoading(true); // Start loading animation
     notify();
     emailjs.sendForm('service_ppaiuyc', 'template_gt69pfx', form.current, 'vsQhuJwdVMI1SNi68')
@@ -67,6 +88,7 @@ export const EmailSection = () => {
         form.current.user_email.value = ''; // Reset the email field
         form.current.user_subject.value = ''; // Reset the subject field
         form.current.message.value = ''; // Reset the message field
+        recaptchaRef.current.reset();
       });
   };
 
@@ -103,7 +125,7 @@ export const EmailSection = () => {
             <Image src={LinkedinIcon} alt="Linkedin Icon" />
           </Link>
           <Link href="https://www.facebook.com/laith.ferjaoui.1/">
-            <Image src={FacebookIcon} className="w-[8%] pad" alt="Github Icon" />
+            <Image src={FacebookIcon} className="w-[8%] h-[90%] pad" alt="Github Icon" />
           </Link>
         </div>
       </div>
@@ -156,12 +178,19 @@ export const EmailSection = () => {
                 placeholder="Let's talk about..."
               />
             </div>
+            <ReCAPTCHA
+                className="mb-3"
+                sitekey="6LdKBPooAAAAAPZk5KPaA6ZcgR1u34JQeqitCBpc"
+                ref={recaptchaRef}
+                theme="dark"
+                onChange={(value) => setRecaptchaChecked(!!value)}
+                />
             <button
               type="submit"
               value="Send"
               onClick={resetButton}
-              disabled={loading || emailSent}
-              className="bg-primary-500 hover:bg-primary-600 text-white font-medium py-2.5 px-5 rounded-lg w-full relative z-10"
+              disabled={loading || emailSent }
+              className="bg-primary-500 hover:bg-primary-600 text-white font-medium py-2.5 px-5 rounded-lg w-full relative z-10 "
             >
               {loading ? 'Loading...' : emailSent ? 'Done' : 'Send Message'}
             </button>
