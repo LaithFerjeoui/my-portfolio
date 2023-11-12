@@ -73,11 +73,10 @@ export const EmailSection = () => {
     }
     setLoading(true); // Start loading animation
     notify();
-    emailjs.sendForm('service_ppaiuyc', 'template_gt69pfx', form.current, 'vsQhuJwdVMI1SNi68')
+    emailjs.sendForm('service_172dqc4', 'template_8hhy2t3', form.current, 'VMjx4PKUDBQiQclgV')
       .then((result) => {
 
         console.log(result.text);
-        notify();
         setEmailSent(true); 
       })
       .catch((error) => {
